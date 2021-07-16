@@ -1,4 +1,5 @@
 import 'package:done_exercise/components/custom_elevated_button.dart';
+import 'package:done_exercise/features/booking/widgets/bottom_sheet/booking_bottom_sheet_page.dart';
 import 'package:done_exercise/utils/strings.dart';
 import 'package:flutter/material.dart';
 
@@ -7,7 +8,7 @@ class BookingPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BookingView();
+    return const BookingView();
   }
 }
 
@@ -18,12 +19,26 @@ class BookingView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          CustomElevatedButton(
-            onPressed: () {},
-            label: Strings.startBooking,
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: CustomElevatedButton(
+              key: const Key('start_booking_key'),
+              onPressed: () => showModalBottomSheet(
+                isScrollControlled: true,
+                context: context,
+                builder: (_) {
+                  return ConstrainedBox(
+                    constraints: BoxConstraints(
+                        maxHeight: MediaQuery.of(context).size.height * 0.94),
+                    child: const BookingBottomSheetPage(),
+                  );
+                },
+              ),
+              label: Strings.startBooking,
+            ),
           )
         ],
       ),

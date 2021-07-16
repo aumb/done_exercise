@@ -1,41 +1,35 @@
+import 'dart:async';
+import 'dart:developer';
+
+import 'package:done_exercise/app_bloc_observer.dart';
+import 'package:done_exercise/utils/custom_theme.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:done_exercise/features/booking/booking_page.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 void main() {
-  runApp(MyApp());
+  Bloc.observer = AppBlocObserver();
+  FlutterError.onError = (details) {
+    log(details.exceptionAsString(), stackTrace: details.stack);
+  };
+  runZonedGuarded(
+    () => runApp(const MyApp()),
+    (error, stackTrace) => log(error.toString(), stackTrace: stackTrace),
+  );
 }
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
+  const MyApp({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Done Exercise',
       themeMode: ThemeMode.light,
-      theme: ThemeData(
-        accentColor: Color(0xFF6734C7),
-        primarySwatch: Colors.blue,
-        bottomSheetTheme: BottomSheetThemeData(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
-          ),
-        ),
-        buttonTheme: ButtonThemeData(buttonColor: Colors.black),
-        //TODO: figure out theme on figma
-        textTheme: TextTheme(),
-        inputDecorationTheme: InputDecorationTheme(
-          //TODO: correct it when theme is figured
-          labelStyle: TextStyle(),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8),
-            borderSide: BorderSide(
-              color: Color(0xFFC4C4C4),
-            ),
-          ),
-        ),
-      ),
-      home: BookingPage(),
+      theme: CustomTheme.light,
+      home: const BookingPage(),
     );
   }
 }
